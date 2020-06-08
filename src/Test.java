@@ -11,15 +11,28 @@ import sqlserver.*;
 
 public class Test {
     public static void main(String args[]){
-        Date date = new Date();
 
-        // 使用 toString() 函数显示日期时间
-        System.out.println(date.toString());
        try{
            Sqlserver sql = new Sqlserver();
 
+           System.out.println(sql.teacherSign("T001","123456"));//教师登入
 
-         sql.putMessage("M001","This is the Second Message");
+
+           sql.refleshNet();//重置签到(连接)表net
+           sql.putNet("S001","C1","192.168.0.2","80");//学生连接进入教室并签到
+           /*
+           连接等同于签到
+            */
+
+
+
+           sql.putMessage("S002","Second message.");
+
+           sql.putUser("S002","张三","321","学生");
+
+           sql.updUser("S002","张三","333","学生");
+
+//           sql.delUser("S001");
            /*
            聊天记录写入数据库，后台会自动写入时间，不需额外添加。请注意M001为ID号，不是姓名。
            */
@@ -43,6 +56,17 @@ public class Test {
            getT1 getT2 getT3分别得到泛型向量中的三个内容
            若为聊天记录 统一格式为 姓名、聊天消息、发送时间
            若为签到时间 统一格式为 ID、姓名、签到时间
+            */
+
+           System.out.println("下列为用户表提取");
+           Vector<mess> rs3;
+           rs3 = sql.getUser();
+           for(int i = 0; i < rs3.size(); i++){
+               System.out.println(rs3.elementAt(i).getT1() + " " + rs3.elementAt(i).getT2() + " " + rs3.elementAt(i).getT3()+ " " + rs3.elementAt(i).getT4());
+           }
+           /*
+           getT1 getT2 getT3 getT4分别得到泛型向量中的四个内容
+           对于用户表 统一格式为 ID name password rank
             */
 
        } catch (Exception e) {
